@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio Raton-Laveur</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="auth-container" class="popup">
+    <div id="auth-forms">
+      <h2>Connexion ou création de compte</h2>
+      <form id="registerForm">
+        <input type="email" id="regEmail" placeholder="Email" required />
+        <input type="email" id="regConfirmEmail" placeholder="Confirmer Email" required />
+        <input type="text" id="regPseudo" placeholder="Pseudo" required />
+        <input type="password" id="regPassword" placeholder="Mot de passe" required />
+        <button type="submit">Créer un compte</button>
+      </form>
+
+      <form id="loginForm">
+        <input type="text" id="loginPseudo" placeholder="Pseudo" required />
+        <input type="password" id="loginPassword" placeholder="Mot de passe" required />
+        <button type="submit">Se connecter</button>
+        <button type="button" id="forgotBtn">Mot de passe oublié</button>
+      </form>
+
+      <div id="forgotContainer" class="hidden">
+        <input type="text" id="forgotPseudo" placeholder="Pseudo" />
+        <button id="resetPasswordBtn">Envoyer mail de réinitialisation</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <h1>Studio Raton-Laveur</h1>
+    <nav>
+      <button onclick="goTo('home')">Accueil</button>
+      <button onclick="goTo('games')">Nos Jeux</button>
+      <button onclick="goTo('admin')">Admin</button>
+      <button onclick="logout()">Déconnexion</button>
+    </nav>
+    <div id="user-info"></div>
+  </header>
+
+  <main id="home">
+    <h2>Bienvenue sur le site officiel du Studio Raton-Laveur !</h2>
+  </main>
+
+  <main id="games" class="hidden">
+    <h2>Nos Jeux</h2>
+    <div class="game-card">
+      <img src="gtag.jpg" alt="G.T.A.G 1">
+      <h3>G.T.A.G 1 <span class="coming">À venir</span></h3>
+      <video controls src="gtag_trailer.mp4" width="320"></video>
+      <div class="review-section">
+        <h4>Commentaires et Avis</h4>
+        <div id="review-list"></div>
+        <form id="reviewForm">
+          <textarea id="reviewText" required placeholder="Votre avis..."></textarea>
+          <div id="starContainer">
+            <span>Note :</span>
+            <select id="starRating">
+              <option value="1">⭐</option>
+              <option value="2">⭐⭐</option>
+              <option value="3">⭐⭐⭐</option>
+              <option value="4">⭐⭐⭐⭐</option>
+              <option value="5">⭐⭐⭐⭐⭐</option>
+            </select>
+          </div>
+          <button type="submit">Envoyer</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <main id="admin" class="hidden">
+    <h2>Interface Admin</h2>
+    <div id="adminAccess" class="popup">
+      <input type="password" id="adminCode" placeholder="Code admin" />
+      <button onclick="checkAdminCode()">Entrer</button>
+    </div>
+    <div id="adminPanel" class="hidden">
+      <h3>Messagerie privée</h3>
+      <form id="messageForm">
+        <input type="text" id="msgTo" placeholder="Envoyer à (pseudo)" required />
+        <textarea id="msgContent" placeholder="Message" required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+      <div id="messageList"></div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
