@@ -1,0 +1,51 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #333;
+  color: white;
+  padding: 1em;
+}
+
+nav button {
+  margin-right: 1em;
+  background: #555;
+  color: white;
+  border: none;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+main {
+  padding: 2em;
+}
+
+.hidden {
+  display: none;
+}
+
+.popup {
+  padding: 1em;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+}
+
+.game-card {
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-top: 1em;
+}
+
+.coming {
+  color: red;
+  font-style: italic;
+}
+
+.review-section {
+  margin-top: 1em;
+  border-top: 1px solid #ddd;
+  padding-top: 1em;
+}
