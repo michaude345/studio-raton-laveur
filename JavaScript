@@ -1,0 +1,108 @@
+let currentUser = null;
+let users = JSON.parse(localStorage.getItem("users")) || {};
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+let messages = JSON.parse(localStorage.getItem("messages")) || [];
+
+document.getElementById("registerForm").onsubmit = e => {
+  e.preventDefault();
+  let email = regEmail.value;
+  let confirm = regConfirmEmail.value;
+  let pseudo = regPseudo.value;
+  let password = regPassword.value;
+  if (email !== confirm) return alert("Emails non identiques");
+  if (users[pseudo]) return alert("Pseudo déjà pris");
+
+  users[pseudo] = { email, password, isBoss: pseudo === "racoon studio" };
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Compte créé !");
+};
+
+document.getElementById("loginForm").onsubmit = e => {
+  e.preventDefault();
+  let pseudo = loginPseudo.value;
+  let password = loginPassword.value;
+  if (!users[pseudo] || users[pseudo].password !== password) return alert("Identifiants invalides");
+  currentUser = pseudo;
+  updateUserInfo();
+  document.getElementById("auth-container").classList.add("hidden");
+};
+
+document.getElementById("forgotBtn").onclick = () => {
+  forgotContainer.classList.remove("hidden");
+};
+
+document.getElementById("resetPasswordBtn").onclick = () => {
+  let pseudo = forgotPseudo.value;
+  if (pseudo === "racoon studio") return alert("Code secret détecté ! Accès admin sans email.");
+  if (users[pseudo]) return alert("Email envoyé à " + users[pseudo].email);
+  alert("Aucun compte trouvé.");
+};
+
+function goTo(section) {
+  document.querySelectorAll("main").forEach(m => m.classList.add("hidden"));
+  document.getElementById(section).classList.remove("hidden");
+}
+
+function logout() {
+  currentUser = null;
+  location.reload();
+}
+
+function updateUserInfo() {
+  let info = `${currentUser}`;
+  if (users[currentUser].isBoss) info += " (Boss du studio Raton-Laveur)";
+  document.getElementById("user-info").textContent = info;
+}
+
+document.getElementById("reviewForm").onsubmit = e => {
+  e.preventDefault();
+  if (!currentUser) return alert("Connectez-vous pour poster un avis.");
+  const review = {
+    user: currentUser,
+    text: reviewText.value,
+    rating: parseInt(starRating.value),
+    date: new Date().toLocaleDateString()
+  };
+  reviews.push(review);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+  renderReviews();
+};
+
+function renderReviews() {
+  const list = document.getElementById("review-list");
+  list.innerHTML = "";
+  reviews.sort((a, b) => b.rating - a.rating);
+  for (const r of reviews) {
+    const div = document.createElement("div");
+    div.innerHTML = `<strong>${r.user}</strong> (${r.date}) : ${"⭐".repeat(r.rating)}<br>${r.text}<hr>`;
+    list.appendChild(div);
+  }
+}
+
+renderReviews();
+
+function checkAdminCode() {
+  const code = document.getElementById("adminCode").value;
+  if (code === "team_raton2008") {
+    document.getElementById("adminAccess").classList.add("hidden");
+    document.getElementById("adminPanel").classList.remove("hidden");
+  } else {
+    alert("Code incorrect");
+  }
+}
+
+document.getElementById("messageForm").onsubmit = e => {
+  e.preventDefault();
+  if (!currentUser || (!users[currentUser].isBoss && currentUser !== "racoon studio")) {
+    return alert("Seul un admin peut envoyer des messages.");
+  }
+  const msg = {
+    from: currentUser,
+    to: msgTo.value,
+    content: msgContent.value,
+    date: new Date().toLocaleString()
+  };
+  messages.push(msg);
+  localStorage.setItem("messages", JSON.stringify(messages));
+  alert("Message envoyé !");
+};
